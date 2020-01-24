@@ -13,6 +13,11 @@ class Publisher(models.Model):
     
     def __str__(self):
         return self.name
+
+class Friend(models.Model):
+    name = models.TextField()
+    def __str__(self):
+        return self.name
         
 class Book(models.Model):  
     ISBN = models.CharField(max_length=13)  
@@ -23,6 +28,7 @@ class Book(models.Model):
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
     copy_count = models.IntegerField(default=1)
     price = models.DecimalField(max_digits=19, decimal_places=2)
+    friend = models.ForeignKey(Friend, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.title
