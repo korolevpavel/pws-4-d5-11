@@ -4,8 +4,8 @@ from django.http.response import HttpResponseRedirect
 from django.template import loader
 from django.views.generic import CreateView, ListView
 from django.urls import reverse_lazy
-from p_library.models import Book, Publisher, Author
-from p_library.forms import AuthorForm, BookForm
+from p_library.models import Book, Publisher, Author, BooksOnHand
+from p_library.forms import AuthorForm, BookForm, BooksOnHandForm
 from django.forms import formset_factory
 
 
@@ -56,6 +56,8 @@ def book_decrement(request):
     else:
         return redirect('/index/')
 
+###
+
 def publisher(request):
     template = loader.get_template('publisher.html')
     publishers = Publisher.objects.all().order_by('name')
@@ -76,6 +78,8 @@ def publisher(request):
     }
     return HttpResponse(template.render(biblio_data, request))
 
+### 
+
 class AuthorEdit(CreateView):  
     model = Author  
     form_class = AuthorForm  
@@ -86,6 +90,7 @@ class AuthorEdit(CreateView):
 class AuthorList(ListView):  
     model = Author  
     template_name = 'author_list.html'
+
 
 def author_create_many(request):
     AuthorFormSet = formset_factory(AuthorForm, extra=2)
@@ -124,3 +129,15 @@ def books_authors_create_many(request):
 		}  
 	)
     
+###
+
+class BooksOnHandEdit(CreateView):
+    model = BooksOnHand
+    form_class = BooksOnHandForm
+    success_url = reverse_lazy('p_library:friends_list')
+    template_name = 'friend_edit.html'
+
+
+class BooksOnHandList(ListView):
+    model = BooksOnHand
+    template_name = 'friend_list.html'  
